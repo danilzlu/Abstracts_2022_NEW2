@@ -1,0 +1,35 @@
+
+
+\begin{center}
+	\maketitle
+	{\large\textit{1. Steklov Mathematical Institute of RAS, Moscow}}
+	
+	{\large\textit{2. National Research University Higher School of Economics, Moscow}}
+\end{center}
+
+Determinantal processes is a class of random point fields, that is,  probability measures on a set of discrete subsets (or \emph{configurations}) of some phase space $E$, which show a mix of random and deterministic behavior.
+
+A determinantal process is defined by a contraction operator on the space $L^2(E)$.
+In most known examples this operator is an orthogonal projection onto some subspace $H\subset L^2(E)$, which consists of sufficiently regular functions, so that one can define the values of a function $f\in H$ in each point of the space~$E$. 
+This allows us to close the loop between the measure on the space of configurations and the subspace $H$: is $f\in H$ uniquely defined by its values on $X$, for almost all configurations $X$?
+ 
+This is known to be true for a wide class of determinantal processes, and moreover, as A. Bufetov~\cite{Bufetov-Sine} has shown, there is a constant $k\ge 0$, which is called \emph{an excess} of the process, such that for almost any configuration $X$ and any choice of $k$ points $x_1,\dots,x_k\in X$ a function $f\in H$ is uniquely defined by its values on $X\setminus\{x_1,\dots,x_k\}$, and if we remove any $(k+1)$ points from almost any configuration, there exists a function $f\in H$ that vanishes on $X\setminus\{x_1,\dots,x_{k+1}\}$.
+
+We are dealing with a more delicate question: is it possible to reconstruct a function~$f$ from its values on $Y=X\setminus\{x_1,\dots,x_k\}$? This problem is linear, so one can start with functions $g_s$ such that $g_s(y)=\delta_{s,y}$ for $s,y\in Y$.
+Then one can expect that
+$$
+	f(x)=\sum_{s\in Y} f(s)g_s(x)\quad\mbox{for all }x\in E.
+$$
+Both parts agree for $x\in Y$, so the identity holds, provided that the series in converging. We have shown that for some determinantal processes this series does converge in $L^2(E)$ for a functions $f$ from a finite-codimension subspace of $H$.
+
+The talk is based on a joint work in progress with Alexander Borichev and Alexander Bufetov.
+
+
+
+\begin{thebibliography}{99}
+	\bibitem{Bufetov-Sine}Alexander I. Bufetov, The sine-process has excess one.  	arXiv:1912.13454.
+	
+\end{thebibliography}
+
+
+
