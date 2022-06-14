@@ -1,5 +1,6 @@
 import os
 import re
+from abstract import *
 
 
 def squeezeContentFromTemplateFile(file):
@@ -25,7 +26,19 @@ def editAllFilesInFolder(folder_path=os.walk(os.path.dirname(__file__)+'\\raw'))
                 outfile.close()
 
 
-if __name__ == '__main__':
-    pass
+def generateListOfParticipantsPackages(folder_path=os.walk(os.path.dirname(__file__)+'\\raw')):
+    packages = set()
+    for address, dirs, files in folder_path:
+        for name in files:
+            if name.endswith('.tex'):
+                infile = open('raw/' + name, 'r')
+                for inline in infile:
+                    if '\\usepackage' in inline:
+                        result = extractPackageFromLine(inline)[:-1]
+                        packages = packages.union(result)
+    return packages
 
+
+if __name__ == '__main__':
+    print(generateListOfParticipantsPackages())
 
