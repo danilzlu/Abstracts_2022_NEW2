@@ -1,18 +1,16 @@
-import os
-import re
 from abstract import *
+import os
 
 
 def squeezeContentFromTemplateFile(file):
     abstract_text = file.read()
-    result = re.split(r'\\begin\{document\}', abstract_text)[1]
-    result = re.split(r'\\end\{document\}', result)[0]
+    result = re.split(r'\\begin\{document}', abstract_text)[1]
+    result = re.split(r'\\end\{document}', result)[0]
     return result
 
 
-def makePartialFileToInput(inputFile, outputFile):
-    text = squeezeContentFromTemplateFile(inputFile)
-    outputFile.write(text)
+def makePartialFileToInput(input_file, output_file):
+    output_file.write(squeezeContentFromTemplateFile(input_file))
 
 
 def editAllFilesInFolder(folder_path=os.walk(os.path.dirname(__file__)+'\\raw')):
@@ -53,13 +51,7 @@ def mainTest():
         print(abstract.toc)
 
 
-ALEXEEV = '\\author{Alexeev V.V., \\underline{Preobrazhenskaia M.M.}, Zelenova V.K.}'
-DAVYDOV = '\\author[1, 2]{\\underline{Davydov A.A.}}'
-MESH = '\\author{Meshcheryakov M.V.}'
-
-
-def notMainTest():
-    name = MESH
+def notMainTest(name=''):
     print(extractAuthorsFromTextRaw(name))
     print(generateFileNameFromAuthorNamesList(extractAuthorsFromTextRaw(name)))
 

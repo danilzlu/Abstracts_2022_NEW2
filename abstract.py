@@ -1,6 +1,4 @@
-import os
 import re
-from io import TextIOWrapper
 
 TITLE_RE = r"\\title{[\w\s\,\.\\\$\-\~]*}"
 AUTHORS_RE_UNDERLINED = r"\\author{[\w\s\,\.\\\$\-\~]*\\underline{[\w\s\,\.\\\$\-\~]*}[\w\s\,\.\\\$\-\~]*}"
@@ -11,22 +9,22 @@ AUTHORS_RE_AFILLS = r"\\author\[[\d\,\s]*\]{[\w\s\,\.\\\$\-\~]*}"
 
 
 def extractAuthorsFromRawLine(line: str):
-    # chech if there are afills in the line
+    # check if there are afills in the line
     if re.match(r"\\author{", line) is not None:    # no afills
         result = re.sub(r'\\author{', '', line)[:-1]
     else:                                           # with afills
-        result = re.sub(r"\\author\[[\d\s\,]+\]{", "", line)[:-1]
+        result = re.sub(r"\\author\[[\d\s,]+]{", "", line)[:-1]
     return result
 
 
-def extractPackageFromLine(line):
+def extractPackageFromLine(line: str):
     """
     Extracts packages from the line in .tex sent abstract file
     :param line:
     :return: set of the extracted abstracts
     """
-    result = re.sub(r"\\usepackage\{", '', line)
-    result = re.sub(r"[\{\}\,]", ';', result)
+    result = re.sub(r"\\usepackage{", '', line)
+    result = re.sub(r"[{},]", ';', result)
     result = re.split(r';', result)
     return result
 
@@ -69,7 +67,7 @@ def generateFileNameFromAuthorNamesList(authors_names: list):
     """
     result = []
     for author_name in authors_names:
-        name = re.sub(r'[\s\.\,\{\}]*', '', author_name)
+        name = re.sub(r'[\s.,{}]*', '', author_name)
         name = re.sub(r"\\underline", '', name)
         result.append(name)
     result.sort()
@@ -79,12 +77,12 @@ def generateFileNameFromAuthorNamesList(authors_names: list):
 def makeTocContent(author_names, title):
     def clearUnderline(author_name):
         name = re.sub(r"\\underline\{", '', author_name)
-        name = re.sub(r"\}", '', name).lower()
+        name = re.sub(r"}", '', name).lower()
         return name
     author_names.sort(key=clearUnderline)
     return "\\addcontentsline{toc}{section}{\n" \
            "\\textbf{" + title.strip() + "}\\\\\n" \
-                                 "\\textit{" + ' '.join(author_names).strip() + "}}\n"
+                                         "\\textit{" + ' '.join(author_names).strip() + "}}\n"
 
 
 class Abstracts(object):
@@ -118,7 +116,7 @@ class Abstracts(object):
         self.file_name = ''
         self.toc = ''
 
-    def getInfoFromFile(self, file: TextIOWrapper):
+    def getInfoFromFile(self, file):
         """
         Function extracts information to class instance from .tex file of the sent abstracts
         :param file: sent file of the abstract
@@ -126,7 +124,7 @@ class Abstracts(object):
         """
         # getting text
         abstract_text = file.read()
-        self.text = re.split(r"\\end\{document\}", re.split(r"\\begin\{document\}", abstract_text)[1])[0]
+        self.text = re.split(r"\\end\{document}", re.split(r"\\begin\{document}", abstract_text)[1])[0]
 
         # getting packages
         packages = set()
