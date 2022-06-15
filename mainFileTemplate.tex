@@ -4,6 +4,27 @@
 \usepackage[T2A]{fontenc}
 \usepackage[russian, english]{babel}
 \usepackage{titling}
+\usepackage{authblk}
+\renewcommand\Authfont{\bfseries}
+\renewcommand\Affilfont{\rmfamily\slshape\small}
+\makeatletter
+\newcommand{\Content}[1]{\def\@Content{#1}}
+\pretitle{\begin{center}\Large\bfseries}
+	\posttitle{\par\end{center}\vspace{\baselineskip}}
+\newcommand*\myinput[1]{% convenience command
+	\input{#1}%
+	\maketitle
+	\@Content
+	\clearpage
+	\renewcommand\AB@affillist{}%
+	\global\let\AB@authlist\@empty
+	\renewcommand\AB@authlist{}%
+	\setcounter{affil}{0}%
+	\setcounter{authors}{0}%
+	\emptythanks}
+\def\maketitle{\AB@maketitle}% modified from authblk.sty
+\makeatother
+%PLACEFORPACKAGES
 
 \renewcommand*{\Affilfont}{\normalsize\it}
 \renewcommand*{\Authfont}{\bf\normalsize}
@@ -76,7 +97,7 @@
 		
 		\let\clearpage\relax
 		
-		%%%PLACEFORABSTRACTS
+		PLACEFORABSTRACTS
 		
 	\end{papers}
 	

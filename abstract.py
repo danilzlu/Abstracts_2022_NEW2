@@ -1,4 +1,5 @@
 import re
+import roman
 
 TITLE_RE = r"\\title{[\w\s\,\.\\\$\-\~]*}"
 AUTHORS_RE_UNDERLINED = r"\\author{[\w\s\,\.\\\$\-\~]*\\underline{[\w\s\,\.\\\$\-\~]*}[\w\s\,\.\\\$\-\~]*}"
@@ -17,17 +18,47 @@ def extractAuthorsFromRawLine(line: str):
     return result
 
 
+def extractAffilsFromRawLine(line: str):
+    if re.match(r"\\affil{", line) is not None:    # no afills
+        result = re.sub(r'\\afill{', '', line)[:-1]
+    else:                                           # with afills
+        result = re.sub(r"\\afill\[[\d\s,]+]{", "", line)[:-1]
+    return result
+
+
+def extractTitleFromRawLine(line: str):
+    if re.match(r"\\title{", line) is not None:    # no afills
+        result = re.sub(r'\\title{', '', line)[:-1]
+    else:                                           # with afills
+        result = re.sub(r"\\title\[[\d\s,]+]{", "", line)[:-1]
+    return result
+
+
 def extractPackageFromLine(line: str):
     """
     Extracts packages from the line in .tex sent abstract file
     :param line:
     :return: set of the extracted abstracts
     """
+    if '[' in line:
+        print('\n\n\n\n\nALARM!!! PACKAGE WITH SETTINGS ADDED BY PARTICIPANT\n\n\n\n')
     result = re.sub(r"\\usepackage{", '', line)
     result = re.sub(r"[{},]", ';', result)
     result = re.split(r';', result)
     result = [line.strip() for line in result]
     return result
+
+
+def extractRawDataFromText(text):
+    raw_data = []
+    for line in text.split('\n'):
+        if "\\title" in line:
+            raw_data.append(line)
+        elif "\\affil" in line:
+            raw_data.append(line)
+        elif "\\author" in line:
+            raw_data.append(line)
+    return "\n".join(raw_data)
 
 
 def extractTitleFromText(text: str):
@@ -116,6 +147,7 @@ class Abstracts(object):
         self.title = ''
         self.file_name = ''
         self.toc = ''
+        self.raw_data = ''
 
     def getInfoFromFile(self, file):
         """
@@ -127,7 +159,7 @@ class Abstracts(object):
         # getting text
         abstract_text = file.read()
         self.text = re.split(r"\\end\{document}", re.split(r"\\begin\{document}", abstract_text)[1])[0]
-
+        self.text = re.sub(r"\\maketitle", '', self.text)
 
         # getting packages
         packages = set()
@@ -141,9 +173,16 @@ class Abstracts(object):
         self.file_name = generateFileNameFromAuthorNamesList(self.names)
         self.toc = "\\begingroup\n" + makeTocContent(self.names, self.title) + \
                    "\\vspace{1cm}\n" \
-                   "\\input{edited/" + self.file_name + \
+                   "\\myinput{edited/" + self.file_name + \
                    "}\n" \
                    "\\endgroup\n"
+        self.raw_data = extractRawDataFromText(abstract_text)
+
+    def generatePartialFile(self):
+        file = open('edited/'+self.file_name + '.tex', 'w')
+        file.write(self.raw_data + "\n\n")
+        file.write("\Content{\n" + self.text + "\n}")
+        file.close()
 
     def __str__(self):
         return '\t'.join([str(self.names), str(self.title), str(self.file_name)])
@@ -155,12 +194,36 @@ class Abstracts(object):
         return self.file_name < other.file_name
 
 
-def generateListOfMainFilePackages(abstracts):
+def generateListOfMainFilePackages(abstracts: list):
     set_of_packages = set()
     for abstract in abstracts:
         set_of_packages = set_of_packages.union(abstract.packages)
     return set_of_packages
 
 
-def makeBookOfAbstracts(abstracts):
-    pass
+def generatePartialAbstractEditedFiles(abstracts: list):
+    for abstract in abstracts:
+        abstract.generatePartialFile()
+
+
+def generatePreamble(abstracts: list):
+    participants_packages = generateListOfMainFilePackages(abstracts)
+    tuple_of_packages_lines = ("\\usepackage{" + package + '}' for package in participants_packages)
+    return "\n" + "\n".join(tuple_of_packages_lines)
+
+
+def generateToc(abstracts: list):
+    return '\n\n\\cleardoublepage'.join((abstract.toc for abstract in abstracts))
+
+
+def makeBookOfAbstracts(abstracts: list, main_template_file_name="mainFileTemplate",
+                        main_file_name_beginning='TMDaRT', number_of_the_conference=6):
+    generatePartialAbstractEditedFiles(abstracts)
+    file = open(main_template_file_name + ".tex", 'r')
+    main_text = file.read()
+    file.close()
+    main_text = main_text.replace("PLACEFORPACKAGES", generatePreamble(abstracts))
+    main_text = main_text.replace("PLACEFORABSTRACTS", generateToc(abstracts))
+    file = open(main_file_name_beginning + roman.toRoman(number_of_the_conference) + ".tex", 'w')
+    file.write(main_text)
+    file.close()
