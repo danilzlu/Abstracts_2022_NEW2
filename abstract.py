@@ -11,25 +11,25 @@ AUTHORS_RE_AFILLS = r"\\author\[[\d\,\s]*\]{[\w\s\,\.\\\$\-\~]*}"
 
 def extractAuthorsFromRawLine(line: str):
     # check if there are afills in the line
-    if re.match(r"\\author{", line) is not None:    # no afills
+    if re.match(r"\\author{", line) is not None:  # no afills
         result = re.sub(r'\\author{', '', line)[:-1]
-    else:                                           # with afills
+    else:  # with afills
         result = re.sub(r"\\author\[[\d\s,]+]{", "", line)[:-1]
     return result
 
 
 def extractAffilsFromRawLine(line: str):
-    if re.match(r"\\affil{", line) is not None:    # no afills
+    if re.match(r"\\affil{", line) is not None:  # no afills
         result = re.sub(r'\\afill{', '', line)[:-1]
-    else:                                           # with afills
+    else:  # with afills
         result = re.sub(r"\\afill\[[\d\s,]+]{", "", line)[:-1]
     return result
 
 
 def extractTitleFromRawLine(line: str):
-    if re.match(r"\\title{", line) is not None:    # no afills
+    if re.match(r"\\title{", line) is not None:  # no afills
         result = re.sub(r'\\title{', '', line)[:-1]
-    else:                                           # with afills
+    else:  # with afills
         result = re.sub(r"\\title\[[\d\s,]+]{", "", line)[:-1]
     return result
 
@@ -111,6 +111,7 @@ def makeTocContent(author_names, title):
         name = re.sub(r"\\underline\{", '', author_name)
         name = re.sub(r"}", '', name).lower()
         return name
+
     author_names.sort(key=clearUnderline)
     return "\\addcontentsline{toc}{section}{\n" \
            "\\textbf{" + title.strip() + "}\\\\\n" \
@@ -167,7 +168,7 @@ class Abstracts(object):
         for line in file:
             if '\\usepackage' in line:
                 packages = packages.union(extractPackageFromLine(line))
-        self.packages = packages.difference(set(['\n', '']))
+        self.packages = packages.difference({'\n', ''})
         self.title = extractTitleFromText(abstract_text)
         self.names = extractAuthorsFromTextRaw(abstract_text)
         self.file_name = generateFileNameFromAuthorNamesList(self.names)
@@ -179,9 +180,9 @@ class Abstracts(object):
         self.raw_data = extractRawDataFromText(abstract_text)
 
     def generatePartialFile(self):
-        file = open('edited/'+self.file_name + '.tex', 'w')
+        file = open('edited/' + self.file_name + '.tex', 'w')
         file.write(self.raw_data + "\n\n")
-        file.write("\Content{\n" + self.text + "\n}")
+        file.write("\\Content{\n" + self.text + "\n}")
         file.close()
 
     def __str__(self):
