@@ -39,6 +39,30 @@ def generateListOfParticipantsPackages(folder_path=os.walk(os.path.dirname(__fil
     return packages
 
 
-if __name__ == '__main__':
-    print(generateListOfParticipantsPackages())
+def mainTest():
+    abstracts_list = []
+    for address, dirs, files in os.walk(os.path.dirname(__file__)+'\\raw'):
+        for name in sorted(files):
+            if name.endswith('.tex'):
+                infile = open('raw/' + name, 'r')
+                abstract = Abstracts()
+                abstract.getInfoFromFile(infile)
+                abstracts_list.append(abstract)
+    abstracts_list.sort()
+    for abstract in abstracts_list:
+        print(abstract.toc)
 
+
+ALEXEEV = '\\author{Alexeev V.V., \\underline{Preobrazhenskaia M.M.}, Zelenova V.K.}'
+DAVYDOV = '\\author[1, 2]{\\underline{Davydov A.A.}}'
+MESH = '\\author{Meshcheryakov M.V.}'
+
+
+def notMainTest():
+    name = MESH
+    print(extractAuthorsFromTextRaw(name))
+    print(generateFileNameFromAuthorNamesList(extractAuthorsFromTextRaw(name)))
+
+
+if __name__ == '__main__':
+    mainTest()
