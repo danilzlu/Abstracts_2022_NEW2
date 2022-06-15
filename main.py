@@ -4,8 +4,8 @@ import os
 
 def squeezeContentFromTemplateFile(file):
     abstract_text = file.read()
-    result = re.split(r'\\begin\{document}', abstract_text)[1]
-    result = re.split(r'\\end\{document}', result)[0]
+    result = re.split(r"\\begin\{document}", abstract_text)[1]
+    result = re.split(r"\\end\{document}", result)[0]
     return result
 
 
@@ -46,7 +46,6 @@ def mainTest():
                 abstract = Abstracts()
                 abstract.getInfoFromFile(infile)
                 abstracts_list.append(abstract)
-    abstracts_list.sort()
     for abstract in abstracts_list:
         print(abstract.toc)
 

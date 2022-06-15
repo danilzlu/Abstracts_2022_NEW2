@@ -26,6 +26,7 @@ def extractPackageFromLine(line: str):
     result = re.sub(r"\\usepackage{", '', line)
     result = re.sub(r"[{},]", ';', result)
     result = re.split(r';', result)
+    result = [line.strip() for line in result]
     return result
 
 
@@ -122,16 +123,19 @@ class Abstracts(object):
         :param file: sent file of the abstract
         :return: None
         """
+
         # getting text
         abstract_text = file.read()
         self.text = re.split(r"\\end\{document}", re.split(r"\\begin\{document}", abstract_text)[1])[0]
 
+
         # getting packages
         packages = set()
+        file.seek(0)
         for line in file:
             if '\\usepackage' in line:
-                packages.union(extractPackageFromLine(line))
-        self.packages = packages
+                packages = packages.union(extractPackageFromLine(line))
+        self.packages = packages.difference(set(['\n', '']))
         self.title = extractTitleFromText(abstract_text)
         self.names = extractAuthorsFromTextRaw(abstract_text)
         self.file_name = generateFileNameFromAuthorNamesList(self.names)
@@ -149,3 +153,14 @@ class Abstracts(object):
 
     def __lt__(self, other):
         return self.file_name < other.file_name
+
+
+def generateListOfMainFilePackages(abstracts):
+    set_of_packages = set()
+    for abstract in abstracts:
+        set_of_packages = set_of_packages.union(abstract.packages)
+    return set_of_packages
+
+
+def makeBookOfAbstracts(abstracts):
+    pass
