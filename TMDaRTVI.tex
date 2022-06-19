@@ -1,0 +1,136 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}%
+\usepackage[T2A]{fontenc}
+\usepackage[russian, english]{babel}
+\usepackage{titling}
+\usepackage{authblk}
+
+\renewcommand\Authfont{\bfseries}
+\renewcommand\Affilfont{\rmfamily\slshape\small}
+
+\makeatletter
+\newcommand{\Content}[1]{\def\@Content{#1}}
+\pretitle{\begin{center}\Large\bfseries}
+	\posttitle{\par\end{center}\vspace{\baselineskip}}
+\newcommand*\myinput[1]{% convenience command
+	\input{#1}%
+	\date{}
+	\maketitle
+	\@Content
+	%\clearpage
+	\renewcommand\AB@affillist{}%
+	\global\let\AB@authlist\@empty
+	\renewcommand\AB@authlist{}%
+	\setcounter{affil}{0}%
+	\setcounter{authors}{0}%
+	%\emptythanks
+}
+\def\maketitle{\AB@maketitle}% modified from authblk.sty
+
+\setlength{\affilsep}{1em}
+\makeatother
+%
+
+
+\title{Topological Methods in Dynamics and Related Topics V}
+
+\begin{document}
+	\pagenumbering{arabic}
+	%\pagestyle{combine}
+	\thispagestyle{empty}
+	
+	\begin{titlepage}
+		\large
+		\begin{center}
+			{\bf\Large International Conference \\
+				\smallskip
+				Topological Methods in Dynamics and Related Topics – V}
+		\end{center}
+		\vspace*{2cm}
+		
+		
+		\vspace{3.cm}
+		
+		\centerline{\bf\LARGE Book of Abstracts}
+		
+		
+		\vspace{6cm}
+		
+		
+		\begin{center}{\Large National Research University}\\ {\Large Higher School of Economics}\\
+		\end{center}
+		
+		\vspace{3cm}
+		
+		\begin{center}{Nizhny Novgorod,\\ 12-15 May 2022}\end{center}
+		
+	\end{titlepage}
+	
+	{\Large\bf Organizers}
+	
+	\vspace{7mm}
+	{\it
+		National Research University Higher School of Economics, Nizhny Novgorod
+	}
+	\vspace{10mm}
+	
+	
+	{\bf Organising Committee}
+	\begin{itemize}
+		\setlength{\itemsep}{1pt}%
+		\setlength{\parskip}{1pt}
+		\item Andrei Morozov
+		\item Elena Nozdrinova
+		\item Danila Shubin
+	\end{itemize}
+	
+	
+	{\bf Acknowledgment.} The conference is partially supported by Laboratory of Dynamical
+	Systems and Applications NRU HSE, of the Ministry of science and higher education of
+	the RF grant ag. \textnumero 075-15-2019-1931
+	
+	\clearpage
+	\setcounter{page}{2}
+	\tableofcontents % main ToC
+	\clearpage
+	
+	
+	
+		\let\clearpage\relax
+		
+
+\addcontentsline{toc}{section}{
+\textbf{The Next Big Thing in Dynamical Systems}\\
+\textit{Another Author25 I.I. \underline{Speaker Author25 I.I.}}}
+\vspace{1cm}
+\myinput{edited/AnotherAuthor25IISpeakerAuthor25II}
+
+
+
+\cleardoublepage
+
+\vspace{1cm}
+\addcontentsline{toc}{section}{
+	\textbf{The Next Big Thing in Dynamical Systems}\\
+	\textit{Another Author1 I.I. \underline{Speaker Author1 I.I.}}}
+\myinput{edited/AnotherAuthor1IISpeakerAuthor1II}
+
+
+
+\cleardoublepage
+
+\vspace{1cm}
+\addcontentsline{toc}{section}{
+	\textbf{The Next Big Thing in Dynamical Systems}\\
+	\textit{Another Author I.I. \underline{Speaker Author I.I.}}}
+\myinput{edited/AnotherAuthorIISpeakerAuthorII}
+
+
+\cleardoublepage
+\vspace{1cm}
+\myinput{edited/AnotherAuthorIISpeakerAuthorII}
+
+
+	
+\end{document}

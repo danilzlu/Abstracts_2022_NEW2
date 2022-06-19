@@ -1,0 +1,71 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}%
+\usepackage[T2A]{fontenc}
+\usepackage[russian, english]{babel}
+\usepackage{titling}
+\usepackage{authblk}
+
+%\renewcommand*{\Affilfont}{\normalsize\it}
+%\renewcommand*{\Authfont}{\bf\normalsize}
+
+
+\newcommand{\example}[2][YYY]{\centering \textit{#2}$^{#1}$}
+
+\makeatletter
+\def\@affiliation{NO UNIVERSITY}
+\newcommand{\affiliation}[2][1]{
+	\def\@affiliation{#1. #2}
+}
+\makeatother
+
+\makeatletter
+\def\@theauthor{NO AUTHOR}
+\newcommand{\theauthor}[2][1]{
+	\def\@theauthor{#2$^{#1}$}
+}
+\makeatother
+
+\makeatletter
+\def\@thetitle{NO TITLE}
+\newcommand{\thetitle}[1]{
+	\def\@thetitle{#1}
+}
+\makeatother
+
+\makeatletter
+\newcommand\themaketitle{
+	{\raggedright % Note the extra {
+			\begin{center}
+				{\Large \bf  \@thetitle }\\[2ex] 
+				{\normalsize\it  \@theauthor}\\[2ex] 
+				{\@affiliation}\\ [2ex]
+	\end{center}}} % Note the extra }
+\makeatother
+
+
+\makeatletter
+\def\@cleartitle{NO TITLE}
+\newcommand{\cleartitle}[1]{
+	\def\@title{}
+	\def\@author{}
+	\def\@affil{}
+}
+\makeatother
+
+
+
+
+\begin{document}
+	\author[1, 2]{Author 1}
+	\affil[1]{Affil 1}
+	\title{Title 1}
+	\maketitle
+	\cleartitle
+	
+	
+	\author[1, 2]{Author 2}
+	\affil[1]{Affil 2}
+	\title{Title 2}
+	\maketitle
+\end{document}

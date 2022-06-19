@@ -1,0 +1,4 @@
+\babel@toc {english}{}\relax 
+\contentsline {section}{ \textbf {The Next Big Thing in Dynamical Systems}\\ \textit {Another Author25 I.I. \underline {Speaker Author25 I.I.}}}{3}{}%
+\contentsline {section}{ \textbf {The Next Big Thing in Dynamical Systems}\\ \textit {Another Author1 I.I. \underline {Speaker Author1 I.I.}}}{3}{}%
+\contentsline {section}{ \textbf {The Next Big Thing in Dynamical Systems}\\ \textit {Another Author I.I. \underline {Speaker Author I.I.}}}{4}{}%
