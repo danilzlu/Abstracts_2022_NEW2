@@ -46,7 +46,7 @@ def mainTest():
                 abstract = Abstracts()
                 abstract.getInfoFromFile(infile)
                 abstracts_list.append(abstract)
-    makeBookOfAbstracts(abstracts_list)
+    print("\n".join(abstracts_list))
 
 
 def notMainTest(name=''):
